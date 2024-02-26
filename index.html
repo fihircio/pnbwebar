@@ -10,8 +10,9 @@
     <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/band-example/band.mind; maxTrack: 2" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <!-- Existing asset loading code -->
       <a-assets>
-        <a-asset-item id="bearModel" src="https://raw.githubusercontent.com/fihircio/pnbwebar/main/pnb118.gltf"></a-asset-item>
+        <a-asset-item id="PNBModel" src="https://raw.githubusercontent.com/fihircio/pnbwebar/main/pnb118.gltf"></a-asset-item>
         <a-asset-item id="raccoonModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/band-example/raccoon/scene.gltf"></a-asset-item>
+        <a-asset-item id="RayaSound" src="path/to/your/sound.mp3"></a-asset-item>
       </a-assets>
       
       <a-light
@@ -30,7 +31,8 @@
         <a-gltf-model rotation="-90 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer>
       </a-entity>
       <a-entity mindar-image-target="targetIndex: 1">
-        <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer>
+        <a-gltf-model rotation="90 0 0 " position="0 -0.25 0" scale="0.01 0.01 0.01" src="#PNBModel" animation-mixer>
+        <a-sound src="#RayaSound" autoplay="false" position="0 1.6 0"></a-sound>
       </a-entity>
 
       <!-- Record Button -->
@@ -70,6 +72,22 @@
           document.getElementById('recordButton').style.backgroundColor = 'white';
           document.getElementById('recordButton').innerText = '';
         }
+
+        // Access the sound component
+        var rayaSound = document.querySelector('#RayaSound');
+
+        // Access the marker root
+        var markerRoot = document.querySelector('#markerRoot');
+        // Add an event listener to play the sound when the marker is found
+        markerRoot.addEventListener('markerFound', function () {
+          rayaSound.components.sound.playSound();
+        });
+
+        // Add an event listener to stop the sound when the marker is lost
+        markerRoot.addEventListener('markerLost', function () {
+          rayaSound.components.sound.stopSound();
+        });
+
       </script>
     </a-scene>
   </body>
